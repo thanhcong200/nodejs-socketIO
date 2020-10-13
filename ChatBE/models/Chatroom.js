@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 
-const chatroomSchema = mongoose.Schema(
+const chatroomSchema = new mongoose.Schema(
     {
         name: {
             type: String,

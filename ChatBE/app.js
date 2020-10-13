@@ -1,12 +1,12 @@
 const express = require('express');
-const userRouter = require('./routers/userRouter');
+const user = require('./routers/userRouter')
 const chatroomRouter = require('./routers/chatroomRouter')
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(require('cors')());
-app.use('/user', userRouter);
+app.use('/user', user);
 app.use('/chatroom', chatroomRouter);
 
 const errorHandlers = require('./handles/errorHandles');

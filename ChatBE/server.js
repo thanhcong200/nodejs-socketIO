@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const app = require('./app');
+
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE, {
     useUnifiedTopology: true,
@@ -20,9 +20,10 @@ mongoose.connection.once('open', ()=>{
 
 require('./models/User');
 require('./models/Chatroom');
-require('./models/User');
+require('./models/Message');
 
 
+const app = require('./app');
 
 app.listen(3000, ()=> console.log('Running at 3000 port.'));
 
