@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model("User");
 const sha256 = require('js-sha256');
 const jwt = require('jwt-then');
+const Chatroom = require('../models/Chatroom');
 
 
 exports.register = async(req, res) => {
@@ -19,8 +20,10 @@ exports.register = async(req, res) => {
             password
         });
         await user.save();
+        const token = await jwt.sign({id: user.id}, process.env.SECRET);
         res.json({
-            message: "User " + `${name}` + " register successfully."
+            user,
+            token
         });
     };
 
@@ -31,15 +34,25 @@ exports.login = async(req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({
         email,
-        password: sha256(password + process.env.SALT)
+        password
     });
-
+   
     if( !user) throw "Email and password invalid!";
     else {
         const token = await jwt.sign({id: user.id}, process.env.SECRET);
+        const rooms = await Chatroom.find({});
+        const users = await User.find({});
         res.json({
-            message: "User logged in successfully.",
+            rooms,
+            user,
+            users,
             token
         });
     };
 };
+
+
+exports.getAllUsers = async(req, res) => {
+    const users = await User.find({});
+    res.json(users);
+}

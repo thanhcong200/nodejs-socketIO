@@ -1,0 +1,10 @@
+export const AUTH_SIGNUP_SUCCESS = 'AUTH_SIGNUP_SUCCESS';
+export const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
+export const AUTH_SIGNUP_FAIL = 'AUTH_SIGNUP_FAIL';
+export const AUTH_LOGIN_FAIL = 'AUTH_LOGIN_FAIL';
+export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+export const CHAT_ROOMS = 'CHAT_ROOMS';
+export const NEW_CHATS = 'NEW_CHATS';
+export const MESSAGES = 'MESSAGES';
+export const CREATE_CHAT = 'CREATE_CHAT';
+export const MY_ACCOUNT = 'MY_ACCOUNT';

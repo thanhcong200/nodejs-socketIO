@@ -1,32 +1,29 @@
-import React, {useRef} from 'react'
-import axios from 'axios';
-import makeToast from './Toaster';
+import React, {useRef, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import '../Styles/Common.css';
+import * as actionChatrooms from '../redux/actions/chatrooms';
+import makeToast from './Toaster';
 
 export default function Loggin(props) {
     
     const emailRef = useRef();
     const passwordRef = useRef();
+    const dispatch = useDispatch();
+    const {auth} = useSelector(state => state.Chatrooms);
+
+    useEffect(() => {
+        if(auth) {
+            props.history.push('/dashboard');
+        }
+    })
 
     const loginUser = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
-
-        axios.post('http://localhost:3000/user/login',{
-            email, 
-            password
-        })
-        .then(res => {
-            makeToast('success', res.data.message);
-            localStorage.setItem('CC_Token', res.data.token);
-            props.history.push('/dashboard');
-        })
-        .catch(err => {
-            if(err && err.response && err.response.data && err.response.data.message){
-                makeToast('error', err.response.data.message);
-            }
-        });
+        dispatch(actionChatrooms.login(email, password));
+        if(auth) makeToast("success", "Logged!");
+        else makeToast("error", "Loggin fail!");
     };
 
     
@@ -55,7 +52,7 @@ export default function Loggin(props) {
                         />
                     </div>
                 <button onClick={loginUser}>Login</button>
-                <h4>Have you account? <Link to='/register' style={{color: 'red'}}> SignUp</Link></h4>
+                <h5>Have you account? <Link to='/register' style={{color: 'red'}}> SignUp</Link></h5>
             </div>
         </div>
     );

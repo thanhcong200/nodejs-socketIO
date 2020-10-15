@@ -1,36 +1,28 @@
-import React, { useRef } from 'react';
-import axios from 'axios';
-import makeToast from './Toaster';
-
+import React, { useRef, useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import '../Styles/Common.css';
+import * as actionChatrooms from '../redux/actions/chatrooms';
 
 export default function Register(props){
 
     const nameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
+    const dispatch = useDispatch();
+    const {auth} = useSelector(state => state.Chatrooms);
+
+    useEffect(() => {
+      if(auth) {
+          props.history.push('/login');
+      }
+    })
 
     const registerUser = () => {
         const name = nameRef.current.value;
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
-
-        axios.post('http://localhost:3000/user/register', {
-            name,
-            email,
-            password
-        })
-        .then(res => {
-            makeToast('success', res.data.message);
-            props.history.push('/login');
-        })
-        .catch(err=> {
-            if(err && err.response && err.response.data && err.response.data.message) {
-                makeToast('error', err.response.data.message);
-            };
-        });
+        dispatch(actionChatrooms.signup(name, email, password));
     };
-
-
 
     return (
         <div className="card">

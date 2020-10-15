@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('../models/User');
 const Chatroom = mongoose.model("Chatroom");
 
 exports.createChatroom = async(req, res) => {
@@ -9,7 +10,16 @@ exports.createChatroom = async(req, res) => {
     if(chatroomExists) throw "Chatroom name have already!";
     const chatroom = new Chatroom({name});
     await chatroom.save();
+    const users = await User.find({});
+    const rooms = await Chatroom.find({});
     res.json({
-        message: "Chatroom created."
+        users,
+        rooms
     });
 };
+
+
+exports.getAllChatroom = async(req, res) => {
+    const chatrooms = await Chatroom.find({});
+    res.json(chatrooms);
+}
